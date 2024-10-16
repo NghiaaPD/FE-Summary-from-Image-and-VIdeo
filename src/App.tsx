@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button"
+import FileInput from "./pages/imageVideoSumary/fileInput";
 
 function App() {
-
   return (
-      <>
-          <Button>Click me</Button>
-      </>
-
-  )
+    <div className="container max-w-2xl mx-auto">
+      <FileInput />
+    </div>
+  );
 }
 
-export default App
+export default App;
