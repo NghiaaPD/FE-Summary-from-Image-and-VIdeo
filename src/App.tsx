@@ -1,4 +1,4 @@
-import FileInput from "./pages/imageVideoSumary/fileInput";
+import FileInput from "./pages/imageVideoSumary/FileInput";
 
 function App() {
   return (
