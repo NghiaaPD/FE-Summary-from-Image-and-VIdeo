@@ -1,56 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-function FileInput({ isVideo }: { isVideo: number }) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) {
-      alert("No file selected!");
-      return;
-    }
-    const file = e.target.files[0];
-    const fileExtension = file.name.split(".").pop()!.toLowerCase();
-    if (!["jpg", "jpeg", "png"].includes(fileExtension) && !isVideo) {
-      alert("Invalid file type! Only JPG, JPEG, PNG files are allowed.");
-      return;
-    }
-    if (!["mp4", "mpeg"].includes(fileExtension) && isVideo) {
-      alert("Invalid file type! Only MP4 files are allowed.");
-      return;
-    }
-    setSelectedFile(file);
-    setFilePreviewUrl(URL.createObjectURL(file));
-  };
-
-  const removeSelectedImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    setSelectedFile(null);
-    if (filePreviewUrl) {
-      URL.revokeObjectURL(filePreviewUrl);
-    }
-    setFilePreviewUrl(null);
-  };
-
-  const handleSubmit = () => {
-    const fileExtension = selectedFile!.name.split(".").pop()!.toLowerCase();
-    if (!["jpg", "jpeg", "png"].includes(fileExtension) && !isVideo) {
-      alert("Invalid file type! Only JPG, JPEG, PNG files are allowed.");
-      return;
-    }
-    if (!["mp4", "mpeg"].includes(fileExtension) && isVideo) {
-      alert("Invalid file type! Only MP4 files are allowed.");
-      return;
-    }
-
-    if (selectedFile) {
-      console.log(`${!isVideo ? "Image" : "Video"} submitted:`, selectedFile);
-      alert(`${!isVideo ? "Image" : "Video"} submitted successfully!`);
-    }
-  };
-
+function FileInput({
+  handleFileChange,
+  removeSelectedImage,
+  handleSubmit,
+  filePreviewUrl,
+  responseText,
+  isVideo,
+}: {
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  removeSelectedImage: (e: React.MouseEvent) => void;
+  handleSubmit: () => void;
+  filePreviewUrl: string | null;
+  responseText: string | null;
+  isVideo: number;
+}) {
   useEffect(() => {
     return () => {
       if (filePreviewUrl) {
@@ -62,7 +26,7 @@ function FileInput({ isVideo }: { isVideo: number }) {
   return (
     <>
       <div className="w-3/5 h-64 relative bg-slate-50 flex justify-center items-center border border-dashed border-gray-400 rounded-lg">
-        {selectedFile ? (
+        {filePreviewUrl ? (
           <>
             {!isVideo ? (
               <img
@@ -113,20 +77,26 @@ function FileInput({ isVideo }: { isVideo: number }) {
                 type="file"
                 accept={!isVideo ? ".jpg, .jpeg, .png" : ".mp4"}
                 className="sr-only"
-                onChange={handleImageChange}
+                onChange={handleFileChange}
               />
             </div>
           </label>
         )}
       </div>
 
-      {selectedFile && (
+      {filePreviewUrl && !responseText && (
         <button
           onClick={handleSubmit}
           className="mt-2 px-4 py-2 bg-slate-50 border-2 border-gray-400 text-black rounded-md hover:bg-slate-200"
         >
           Submit {!isVideo ? "Image" : "Video"}
         </button>
+      )}
+
+      {responseText && (
+        <div className="mt-2 p-2 w-3/4 bg-slate-50 border border-gray-400 rounded-md text-gray-900">
+          {responseText}
+        </div>
       )}
     </>
   );
