@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-function FileInput() {
-  const [selectedImg, setSelectedImg] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+function FileInput({ isVideo }: { isVideo: number }) {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) {
@@ -11,58 +11,81 @@ function FileInput() {
     }
     const file = e.target.files[0];
     const fileExtension = file.name.split(".").pop()!.toLowerCase();
-    if (!["jpg", "jpeg", "png"].includes(fileExtension)) {
+    if (!["jpg", "jpeg", "png"].includes(fileExtension) && !isVideo) {
       alert("Invalid file type! Only JPG, JPEG, PNG files are allowed.");
       return;
     }
-    setSelectedImg(file);
-    setImagePreviewUrl(URL.createObjectURL(file));
+    if (!["mp4", "mpeg"].includes(fileExtension) && isVideo) {
+      alert("Invalid file type! Only MP4 files are allowed.");
+      return;
+    }
+    setSelectedFile(file);
+    setFilePreviewUrl(URL.createObjectURL(file));
   };
 
   const removeSelectedImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
-    setSelectedImg(null);
-    if (imagePreviewUrl) {
-      URL.revokeObjectURL(imagePreviewUrl);
+    setSelectedFile(null);
+    if (filePreviewUrl) {
+      URL.revokeObjectURL(filePreviewUrl);
     }
-    setImagePreviewUrl(null);
+    setFilePreviewUrl(null);
   };
 
   const handleSubmit = () => {
-    if (selectedImg) {
-      console.log("Image submitted:", selectedImg);
-      alert("Image submitted successfully!");
+    const fileExtension = selectedFile!.name.split(".").pop()!.toLowerCase();
+    if (!["jpg", "jpeg", "png"].includes(fileExtension) && !isVideo) {
+      alert("Invalid file type! Only JPG, JPEG, PNG files are allowed.");
+      return;
+    }
+    if (!["mp4", "mpeg"].includes(fileExtension) && isVideo) {
+      alert("Invalid file type! Only MP4 files are allowed.");
+      return;
+    }
+
+    if (selectedFile) {
+      console.log(`${!isVideo ? "Image" : "Video"} submitted:`, selectedFile);
+      alert(`${!isVideo ? "Image" : "Video"} submitted successfully!`);
     }
   };
 
   useEffect(() => {
     return () => {
-      if (imagePreviewUrl) {
-        URL.revokeObjectURL(imagePreviewUrl);
+      if (filePreviewUrl) {
+        URL.revokeObjectURL(filePreviewUrl);
       }
     };
-  }, [imagePreviewUrl]);
+  }, [filePreviewUrl]);
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-3/4 h-64 relative flex justify-center items-center border border-dashed border-gray-400 rounded-lg mt-5">
-        {selectedImg ? (
+    <>
+      <div className="w-3/5 h-64 relative bg-slate-50 flex justify-center items-center border border-dashed border-gray-400 rounded-lg">
+        {selectedFile ? (
           <>
-            <img
-              src={imagePreviewUrl!}
-              alt="Selected Preview"
-              className="w-full h-full object-scale-down border rounded-lg"
-            />
+            {!isVideo ? (
+              <img
+                src={filePreviewUrl!}
+                alt="Selected Preview"
+                className="w-full h-full object-scale-down border rounded-lg"
+              />
+            ) : (
+              <video
+                src={filePreviewUrl!}
+                className="w-full h-full object-scale-down border rounded-lg"
+                controls
+              />
+            )}
+
             <button
               onClick={removeSelectedImage}
-              className="absolute top-2 right-2 text-white rounded-md"
+              className="absolute -top-2 -right-2.5 text-white rounded-md"
             >
               <img
                 src="./removeButtonIcon.png"
                 alt="Remove Image"
-                className="w-4 h-4 cursor-pointer opacity-50 hover:opacity-100"
+                className="w-5 h-5 cursor-pointer"
               />
             </button>
           </>
@@ -73,24 +96,22 @@ function FileInput() {
           >
             <div>
               <img
-                src="./imagesAddIcon.png"
+                src="./addImageIcon.png"
                 alt="Add Icon"
-                className="mx-auto h-12 w-12 opacity-35"
+                className="mx-auto h-12 w-12 opacity-50"
               />
               <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                <span className="text-indigo-600 font-semibold">
-                  Upload a file
-                </span>
-                <p className="pl-1">or drag and drop</p>
+                <span className="text-indigo-600 font-semibold">Click</span>
+                <p className="pl-1">to upload</p>
               </div>
               <p className="text-xs leading-5 text-gray-600">
-                PNG, JPG, JPEG file
+                {!isVideo ? "PNG, JPG, JPEG" : "Video"} file
               </p>
               <input
                 id="file-upload"
                 name="file-upload"
                 type="file"
-                accept=".jpg, .jpeg, .png"
+                accept={!isVideo ? ".jpg, .jpeg, .png" : ".mp4"}
                 className="sr-only"
                 onChange={handleImageChange}
               />
@@ -99,15 +120,15 @@ function FileInput() {
         )}
       </div>
 
-      {selectedImg && (
+      {selectedFile && (
         <button
           onClick={handleSubmit}
-          className="mt-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-800"
+          className="mt-2 px-4 py-2 bg-slate-50 border-2 border-gray-400 text-black rounded-md hover:bg-slate-200"
         >
-          Submit Image
+          Submit {!isVideo ? "Image" : "Video"}
         </button>
       )}
-    </div>
+    </>
   );
 }
 
