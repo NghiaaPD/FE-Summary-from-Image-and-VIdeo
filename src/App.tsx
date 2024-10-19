@@ -2,7 +2,7 @@ import ImageVideoSumary from "./pages/imageVideoSumary/ImageVideoSumary";
 
 function App() {
   return (
-    <div>
+    <div className="w-full h-full">
       <ImageVideoSumary />
     </div>
   );

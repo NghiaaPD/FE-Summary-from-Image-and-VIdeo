@@ -94,7 +94,7 @@ function FileInput({
       )}
 
       {responseText && (
-        <div className="mt-2 p-2 w-3/4 bg-slate-50 border border-gray-400 rounded-md text-gray-900">
+        <div className="mt-2 p-2 w-3/4 h-64 bg-slate-50 border border-gray-400 rounded-md text-gray-900">
           {responseText}
         </div>
       )}

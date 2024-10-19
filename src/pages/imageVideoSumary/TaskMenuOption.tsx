@@ -18,7 +18,7 @@ function TaskMenuOption({
   };
 
   return (
-    <div className="absolute top-0 right-0 w-30 mt-5">
+    <div className="absolute top-0 right-0 w-30">
       <label className="block text-sm font-medium leading-6 text-gray-900">
         Task Options:
       </label>

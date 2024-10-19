@@ -64,3 +64,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+#root {
+  max-height: 97vh;
+  height: 97vh;
+}

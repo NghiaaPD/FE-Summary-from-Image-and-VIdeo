@@ -65,7 +65,7 @@ function ImageVideoSumary() {
   };
 
   return (
-    <div className="container relative max-w-3xl mt-5 mx-auto flex flex-col justify-center items-center">
+    <div className="container relative max-w-3xl h-full mt-5 mx-auto flex flex-col items-center">
       <TaskMenuOption
         selectedTask={isVideo}
         handleTaskChange={handleTaskChange}
