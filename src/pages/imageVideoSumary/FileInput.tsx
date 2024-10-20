@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useDropzone } from "react-dropzone";
 
 function FileInput({
   handleFileChange,
@@ -22,10 +23,22 @@ function FileInput({
       }
     };
   }, [filePreviewUrl]);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+
+    const event = { target: { files: [file] } };
+    handleFileChange(event as unknown as React.ChangeEvent<HTMLInputElement>);
+  }, [handleFileChange]);  
+
+  // Thiết lập dropzone
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: isVideo === 1 ? { 'video/mp4': ['.mp4'] } : { 'image/': ['.jpg', '.jpeg', '.png'] },
+  });
 
   return (
     <>
-      <div className="w-3/5 h-64 relative bg-slate-50 flex justify-center items-center border border-dashed border-gray-400 rounded-lg">
+      <div className="w-3/5 h-64 relative bg-slate-50 flex justify-center items-center border border-dashed border-gray-400 rounded-lg" {...getRootProps()}>
         {filePreviewUrl ? (
           <>
             {!isVideo ? (
@@ -54,24 +67,20 @@ function FileInput({
             </button>
           </>
         ) : (
-          <label
-            htmlFor="file-upload"
-            className="cursor-pointer hover:bg-slate-200 hover:shadow-md hover:rounded-lg flex justify-center items-center w-full h-full text-center"
-          >
-            <div>
-              <img
-                src="./addImageIcon.png"
-                alt="Add Icon"
-                className="mx-auto h-12 w-12 opacity-50"
-              />
-              <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                <span className="text-indigo-600 font-semibold">Click</span>
-                <p className="pl-1">to upload</p>
-              </div>
-              <p className="text-xs leading-5 text-gray-600">
-                {!isVideo ? "PNG, JPG, JPEG" : "Video"} file
-              </p>
-              <input
+          <div className={`w-full h-full object-scale-down border rounded-lg flex flex-col justify-center items-center ${isDragActive ? 'bg-slate-200' : ''}`}>
+            <img
+              src="./addImageIcon.png"
+              alt="Add Icon"
+              className="mx-auto h-12 w-12 opacity-50"
+            />
+            <div className="mt-4 flex text-sm leading-6 text-gray-600">
+              <span className="text-indigo-600 font-semibold">Drag and drop</span>
+              <p className="pl-1">your files here or click to upload</p>
+            </div>
+            <p className="text-xs leading-5 text-gray-600">
+              {!isVideo ? "PNG, JPG, JPEG" : "Video"} file
+            </p>
+            <input {...getInputProps()}
                 id="file-upload"
                 name="file-upload"
                 type="file"
@@ -79,8 +88,7 @@ function FileInput({
                 className="sr-only"
                 onChange={handleFileChange}
               />
-            </div>
-          </label>
+          </div>
         )}
       </div>
 
