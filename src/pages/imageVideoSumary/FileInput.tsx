@@ -8,6 +8,7 @@ function FileInput({
   filePreviewUrl,
   responseText,
   isVideo,
+  isLoading,
 }: {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeSelectedImage: (e: React.MouseEvent) => void;
@@ -15,6 +16,7 @@ function FileInput({
   filePreviewUrl: string | null;
   responseText: string | null;
   isVideo: number;
+  isLoading: boolean;
 }) {
   useEffect(() => {
     return () => {
@@ -114,8 +116,30 @@ function FileInput({
         </button>
       )}
 
-      {responseText && (
+      {(responseText || isLoading) && (
         <div className="mt-2 p-2 w-3/4 h-64 bg-slate-50 border border-gray-400 rounded-md text-gray-900">
+          {isLoading ? (
+            // <div className="w-full h-full flex flex-col justify-center items-center">
+            //   <div className="w-12 h-12 mx-auto border-4 border-t-transparent border-gray-500 rounded-full animate-spin"></div>
+            //   <div className="mt-2 inset-0 flex justify-center items-center text-md text-gray-800">
+            //     Loading...
+            //   </div>
+            // </div>
+            <div className="animate-pulse">
+              <div className="h-4 bg-slate-200 w-1/2 mb-2 rounded-xl"></div>
+              <div className="h-4 bg-slate-200 w-5/6 mb-2 rounded-xl"></div>
+              <div className="h-4 bg-slate-200 w-2/3 mb-2 rounded-xl"></div>
+              <div className="h-4"></div>
+              <div className="h-4 bg-slate-200 w-5/6 mb-2 rounded-xl"></div>
+              <div className="h-4 bg-slate-200 w-full mb-2 rounded-xl"></div>
+              <div className="h-4 bg-slate-200 w-1/2 mb-2 rounded-xl"></div>
+              <div className="h-4 bg-slate-200 w-2/3 mb-2 rounded-xl"></div>
+              <div className="h-4 bg-slate-200 w-1/3 mb-2 rounded-xl"></div>
+              <div className="h-4"></div>
+            </div>
+          ) : (
+            <></>
+          )}
           {responseText}
         </div>
       )}

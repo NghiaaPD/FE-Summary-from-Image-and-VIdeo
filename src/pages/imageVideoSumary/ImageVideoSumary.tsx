@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import FileInput from "./FileInput";
 import TaskMenuOption from "./TaskMenuOption";
+import axios, { CancelTokenSource } from "axios";
 
 function ImageVideoSumary() {
   const [isVideo, setSelectedTask] = useState<number>(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
   const [responseText, setResponseText] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const cancelTokenSource = useRef<CancelTokenSource | null>(null);
 
   const handleTaskChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (cancelTokenSource.current) {
+      cancelTokenSource.current.cancel("Operation canceled by the user.");
+    }
     setSelectedTask(parseInt(e.target.value));
     setSelectedFile(null);
     setFilePreviewUrl(null);
@@ -38,15 +44,20 @@ function ImageVideoSumary() {
     e.stopPropagation();
     e.preventDefault();
 
+    if (cancelTokenSource.current) {
+      cancelTokenSource.current.cancel("Operation canceled by the user.");
+    }
+
     setSelectedFile(null);
     if (filePreviewUrl) {
       URL.revokeObjectURL(filePreviewUrl);
     }
     setFilePreviewUrl(null);
     setResponseText(null);
+    setIsLoading(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const fileExtension = selectedFile!.name.split(".").pop()!.toLowerCase();
     if (!["jpg", "jpeg", "png"].includes(fileExtension) && !isVideo) {
       alert("Invalid file type! Only JPG, JPEG, PNG files are allowed.");
@@ -60,7 +71,40 @@ function ImageVideoSumary() {
     if (selectedFile) {
       console.log(`${!isVideo ? "Image" : "Video"} submitted:`, selectedFile);
       alert(`${!isVideo ? "Image" : "Video"} submitted successfully!`);
-      setResponseText("This is a sample response text from the API.");
+
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      setIsLoading(true); // Set loading state to true
+
+      // Create a new cancel token source before making the API call
+      cancelTokenSource.current = axios.CancelToken.source();
+
+      try {
+        // Call API
+        const response = await axios.post(
+          !isVideo
+            ? "http://127.0.0.1:8000/file/upload_image"
+            : "http://127.0.0.1:8000/file/upload_video",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            cancelToken: cancelTokenSource.current!.token,
+          }
+        );
+        setResponseText(
+          !isVideo
+            ? response.data.content["<MORE_DETAILED_CAPTION>"]
+            : response.data.content
+        );
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        alert("Error uploading file. Please try again.");
+      } finally {
+        setIsLoading(false); // Set loading state to false
+      }
     }
   };
 
@@ -77,6 +121,7 @@ function ImageVideoSumary() {
         filePreviewUrl={filePreviewUrl}
         responseText={responseText}
         isVideo={isVideo}
+        isLoading={isLoading}
       />
     </div>
   );
