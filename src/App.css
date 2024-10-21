@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav-item {
+  @apply text-blue-600 hover:text-orange-500 hover:border-orange-500;
+  border-bottom-width: 2px;
+  border-color: transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-item:hover {
+  @apply border-b-2;
+}
