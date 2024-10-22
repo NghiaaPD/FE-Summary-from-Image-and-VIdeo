@@ -92,14 +92,14 @@ function FileInput({
               </span>
             </div>
             <p className="text-xs leading-5 text-gray-600">
-              {!isVideo ? "PNG, JPG, JPEG" : "Video"} file
+              {!isVideo ? "PNG, JPG, JPEG" : "MP4"} file
             </p>
             <input
               {...getInputProps()}
               id="file-upload"
               name="file-upload"
               type="file"
-              accept={!isVideo ? ".jpg, .jpeg, .png" : "video/*"}
+              accept={!isVideo ? ".jpg, .jpeg, .png" : ".mp4"}
               className="sr-only"
               onChange={handleFileChange}
             />

@@ -63,7 +63,7 @@ function ImageVideoSumary() {
       alert("Invalid file type! Only JPG, JPEG, PNG files are allowed.");
       return;
     }
-    if (!["mp4", "mpeg"].includes(fileExtension) && isVideo) {
+    if (!["mp4"].includes(fileExtension) && isVideo) {
       alert("Invalid file type! Only MP4 files are allowed.");
       return;
     }
