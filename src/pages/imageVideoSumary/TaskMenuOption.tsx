@@ -8,24 +8,22 @@ function TaskMenuOption({
   const tasks = ["Image Summary", "Video Summary"];
 
   const listMenu = () => {
-    return tasks.map((task, index) => {
-      return (
-        <option key={task} value={index} className="text-gray-900 ">
-          {task}
-        </option>
-      );
-    });
+    return tasks.map((task, index) => (
+      <option key={task} value={index} className="text-gray-900">
+        {task}
+      </option>
+    ));
   };
 
   return (
-    <div className="absolute top-0 right-0 w-30">
-      <label className="block text-sm font-medium leading-6 text-gray-900">
+    <div className="w-full mb-3 sm:w-auto sm:relative sm:top-0 sm:right-0 z-50">
+      <label className="block text-sm font-medium text-gray-900 mb-1">
         Task Options:
       </label>
       <select
         value={selectedTask}
         onChange={handleTaskChange}
-        className="relative w-full cursor-default rounded-md bg-white hover:bg-slate-200 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+        className="w-full sm:w-64 cursor-pointer rounded-md bg-white hover:bg-slate-100 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
       >
         {listMenu()}
       </select>

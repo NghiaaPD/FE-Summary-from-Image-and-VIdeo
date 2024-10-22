@@ -1,56 +1,108 @@
-import React from 'react';
-import { FaReact, FaPython } from 'react-icons/fa';
-import { SiTailwindcss, SiTypescript, SiVite  } from 'react-icons/si';
-import ToxIcon from './tox.png';
+import React from "react";
+import { FaReact, FaPython } from "react-icons/fa";
+import { SiTailwindcss, SiTypescript, SiVite } from "react-icons/si";
+import ToxIcon from "./tox.png";
 
 const About: React.FC = () => {
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">About Us</h2>
-      <p>Welcome to our Image and Video Summary Tool! Our goal is to provide an efficient solution for users looking to quickly understand the content of their media.</p>
-      <h3 className="text-xl font-semibold mt-4">What We Do</h3>
-      <p>In an era where visual content dominates, we recognize the need for quick comprehension. Our platform allows users to upload images and videos effortlessly. Leveraging the power of the Florence-2 model from Hugging Face, we generate concise and meaningful text summaries that encapsulate the essence of your media.</p>
-      <h3 className="text-xl font-semibold mt-4">How It Works</h3>
-      <ul className="list-disc pl-5">
-        <li>Upload Your Media: Use our intuitive interface to upload your images or videos.</li>
-        <li>Smart Processing: Our advanced AI analyzes your content in real-time, identifying key elements and themes.</li>
-        <li>Instant Summary: Within moments, you will receive a succinct text summary, helping you grasp the main ideas without having to view the entire media.</li>
-      </ul>
-      <h3 className="text-xl font-semibold mt-4">Why Choose Us?</h3>
-      <ul className="list-disc pl-5">
-        <li>Advanced AI Technology: Powered by the state-of-the-art Florence-2 model, we ensure accurate and relevant summaries.</li>
-        <li>User-Friendly Interface: Designed with simplicity in mind, our tool is accessible to everyone, regardless of technical skills.</li>
-        <li>Time-Saving Solution: Get quick insights from your media, allowing you to focus on what truly matters.</li>
-      </ul>
-      <h2 className="text-xl font-semibold mt-4 text-center">Technique and language</h2>
-      <p>
-        <div className="flex justify-center space-x-8 text-xl">
-            <div className="flex items-center">
-                <SiTailwindcss className="text-2xl" />
-                <span className="ml-2">Tailwind CSS</span>
-            </div>
-            <div className="flex items-center">
-                <FaReact className="text-2xl" />
-                <span className="ml-2">React</span>
-            </div>
-            <div className="flex items-center">
-                <FaPython className="text-2xl" />
-                <span className="ml-2">Python</span>
-            </div>
-            <div className="flex items-center">
-                <img src={ToxIcon} alt="Tox" className="text-2xl" />
-                <span className="ml-2">Tox</span>
-            </div>
-            <div className="flex items-center">
-                <SiTypescript className="text-2xl" />
-                <span className="ml-2">TypeScript</span>
-            </div>
-            <div className="flex items-center">
-                <SiVite className="text-2xl" />
-                <span className="ml-2">Vite</span>
-            </div>
-        </div>
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center">
+        About Us
+      </h2>
+      <p className="text-justify leading-relaxed">
+        Welcome to our Image and Video Summary Tool! Our goal is to provide an
+        efficient solution for users looking to quickly understand the content
+        of their media.
       </p>
+
+      <h3 className="text-xl md:text-2xl font-semibold mt-6">What We Do</h3>
+      <p className="text-justify leading-relaxed">
+        In an era where visual content dominates, we recognize the need for
+        quick comprehension. Our platform allows users to upload images and
+        videos effortlessly. Leveraging the power of the
+        <span className="px-1">
+          <a
+            className="text-indigo-600 underline underline-offset-2 font-semibold hover:text-indigo-500"
+            href="https://huggingface.co/microsoft/Florence-2-large"
+          >
+            Florence-2 model
+          </a>
+        </span>
+        and
+        <span className="px-1">
+          <a
+            className="text-indigo-600 font-semibold underline underline-offset-2 hover:text-indigo-500"
+            href="https://huggingface.co/facebook/bart-large-cnn"
+          >
+            Bart-large-cnn model
+          </a>
+        </span>
+        from Hugging Face, we generate concise and meaningful text summaries
+        that encapsulate the essence of your media.
+      </p>
+
+      <h3 className="text-xl md:text-2xl font-semibold mt-6">How It Works</h3>
+      <ul className="list-disc pl-5 space-y-2">
+        <li>
+          <strong>Upload Your Media:</strong> Use our intuitive interface to
+          upload your images or videos.
+        </li>
+        <li>
+          <strong>Smart Processing:</strong> Our advanced AI analyzes your
+          content in real-time, identifying key elements and themes.
+        </li>
+        <li>
+          <strong>Instant Summary:</strong> Receive a succinct text summary
+          within moments, helping you grasp the main ideas.
+        </li>
+      </ul>
+
+      <h3 className="text-xl md:text-2xl font-semibold mt-6">Why Choose Us?</h3>
+      <ul className="list-disc pl-5 space-y-2">
+        <li>
+          <strong>Advanced AI Technology:</strong> Powered by the
+          state-of-the-art Florence-2 model, we ensure accurate and relevant
+          summaries.
+        </li>
+        <li>
+          <strong>User-Friendly Interface:</strong> Accessible to everyone,
+          regardless of technical skills.
+        </li>
+        <li>
+          <strong>Time-Saving Solution:</strong> Get quick insights from your
+          media and focus on what matters.
+        </li>
+      </ul>
+
+      <h2 className="text-xl md:text-2xl font-semibold mt-6 text-center">
+        Technique and Language
+      </h2>
+      <div className="flex flex-wrap justify-center space-x-4 space-y-4 text-xl mt-4">
+        <div className="flex items-center space-x-2">
+          <SiTailwindcss className="text-2xl" />
+          <span>Tailwind CSS</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <FaReact className="text-2xl" />
+          <span>React</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <FaPython className="text-2xl" />
+          <span>Python</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <img src={ToxIcon} alt="Tox" className="w-8 h-8" />
+          <span>Tox</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <SiTypescript className="text-2xl" />
+          <span>TypeScript</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <SiVite className="text-2xl" />
+          <span>Vite</span>
+        </div>
+      </div>
     </div>
   );
 };
