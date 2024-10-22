@@ -88,6 +88,7 @@ function ImageVideoSumary() {
             : "http://127.0.0.1:8000/file/upload_video",
           formData,
           {
+            timeout: 3000,
             headers: {
               "Content-Type": "multipart/form-data",
             },
