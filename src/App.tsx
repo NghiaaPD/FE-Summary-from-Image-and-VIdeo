@@ -1,9 +1,45 @@
+import { useState } from "react";
 import ImageVideoSumary from "./pages/imageVideoSumary/ImageVideoSumary";
+import ContactInfo from "./components/contactInfo";
+import About from "./components/About"; // Import component About
+import "./App.css";
 
 function App() {
+  const [showContactInfo, setShowContactInfo] = useState(false);
+  const [currentContent, setCurrentContent] = useState('home'); // Quản lý trạng thái hiển thị nội dung
+
+  const handleContactClick = () => {
+    setShowContactInfo(!showContactInfo);
+  };
+
+  const handleMenuClick = (menuItem: string) => {
+    setCurrentContent(menuItem);
+  };
+
   return (
-    <div className="w-full h-full">
-      <ImageVideoSumary />
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-100 to-gray-200">
+      <header className="bg-blue-600 text-white py-4 shadow-lg">
+        <h1 className="text-center text-3xl font-bold">Image and Video Summary Tool</h1>
+      </header>
+      <main className="flex-1 container mx-auto p-6 flex">
+        <aside className="w-full sm:w-1/5 p-4 bg-white shadow-lg rounded-lg h-full">
+          <h2 className="text-xl font-semibold mb-4">MENU</h2>
+          <ul className="space-y-2">
+            <li><a href="#" className="nav-item" onClick={() => handleMenuClick('home')}>Home</a></li>
+            <li><a href="#" className="nav-item" onClick={() => handleMenuClick('about')}>About</a></li>
+            <li>
+              <a href="#" className="nav-item" onClick={handleContactClick}>
+                Contact
+              </a>
+            </li>
+          </ul>
+          <ContactInfo show={showContactInfo} />
+        </aside>
+        <div className="flex-1 p-4 bg-white shadow-lg rounded-lg mx-4">
+          {currentContent === 'home' && <ImageVideoSumary />}
+          {currentContent === 'about' && <About />} {/* Sử dụng component About */}
+        </div>
+      </main>
     </div>
   );
 }
